@@ -17,10 +17,10 @@ function initializeColors() {
   chooseColor('yellow');
 }
 
-function chooseColor(color){
-  const index = allColors.findIndex( c => c === color);
-  const prevIndex = allColors.findIndex( c => c === chosenColor);
-  if(index === -1 || prevIndex === -1){
+function chooseColor(color) {
+  const index = allColors.findIndex(c => c === color);
+  const prevIndex = allColors.findIndex(c => c === chosenColor);
+  if (index === -1 || prevIndex === -1) {
     return;
   }
   chosenColor = color;
@@ -78,15 +78,27 @@ function roundTo5th(num) {
 function keyPressed(e) {
   switch (e.code) {
     case "ArrowUp":
+      if (movement === "down") {
+        return;
+      }
       movement = "up";
       break;
     case "ArrowDown":
+      if (movement === "up") {
+        return;
+      }
       movement = "down";
       break;
     case "ArrowLeft":
+      if (movement === "right") {
+        return;
+      }
       movement = "left";
       break;
     case "ArrowRight":
+      if (movement === "left") {
+        return;
+      }
       movement = "right";
       break;
   }
