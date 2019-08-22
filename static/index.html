@@ -1,0 +1,283 @@
+<html>
+
+<head>
+    <title>Snake</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Blinker&display=swap" rel="stylesheet">
+    <style>
+        html {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #021025;
+            font-family: 'Blinker', sans-serif;
+        }
+
+        .container {
+            width: 1086px;
+            height: 703px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .canvas-container {
+            width: 702.5px;
+            height: 702.5px;
+            position: relative;
+        }
+
+        .canvas {
+            width: 700px;
+            height: 700px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border: 1px solid #566c8b;
+            border-right: 1.2px solid #566c8b;
+            border-bottom: 1.2px solid #566c8b;
+        }
+
+        .blue {
+            background-color: #0b2b5c;
+        }
+
+        .scores {
+            height: 700px;
+            width: 180px;
+            border: none;
+            border-radius: 8px;
+            background-color:#0e3674;
+            margin-left: 12px;
+        }
+
+        .high-scores {
+            height: 700px;
+            width: 180px;
+            border: none;
+            border-radius: 8px;
+            background-color:#0e3674;
+            margin-right: 12px;
+        }
+
+        .caption {
+            width: 100%;
+            height: 48px;
+            border-bottom: 1.5px solid #566c8b;
+            font-size: 18px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scores-item {
+            width: calc(100% - 4px);
+            padding-left: 4px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .scores-color {
+            width: 16px;
+            height: 16px;
+            margin: 4px;
+        }
+
+        .scores-name {
+            width: 100px;
+            margin: 4px;
+            font-size: 16px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        .scores-points {
+            margin: 4px;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .highscores-item {
+            width: calc(100% - 16px);
+            padding: 8px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+        }
+
+        .highscores-name {
+            width: 110px;
+            margin: 4px;
+            font-size: 18px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        .highscores-points {
+            margin: 4px;
+            font-size: 18px;
+            color: #ffffff;
+        }
+
+        .join-form {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #021025;
+        }
+
+        .join-form-text {
+            color: #ffffff;
+            font-size: 18px;
+            padding: 8px;
+        }
+
+        .join-form-input {
+            background-color:#104088;
+            border: 2px solid #ffffff;
+            font-size: 18px;
+            padding: 8px;
+            border-radius: 4px;
+            color: #ffffff;
+            font-family: 'Blinker', sans-serif;
+            transition: all 0.225s linear;
+            outline: none;
+        }
+
+        .join-form-input:hover {
+            border: 2px solid #5c8dd6;
+        }
+
+        .join-form-button {
+            padding: 8px;
+            margin: 8px;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #104088;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.225s linear;
+        }
+        .join-form-button:hover {
+            background-color: #2355a1;
+        }
+        .colors-to-choose {
+            padding: 12px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .color-box {
+            height: 32px;
+            width: 32px;
+            min-height: 32px;
+            min-width: 32px;
+            margin: 4px;
+            border: 4px solid #021025;
+            cursor: pointer;
+        }
+        .yellow {
+            background-color: yellow;
+        }
+        .orange {
+            background-color: orange;
+        }
+        .red {
+            background-color: red;
+        }
+        .greenyellow {
+            background-color: greenyellow;
+        }
+        .green {
+            background-color: green;
+        }
+        .violet{
+            background-color: violet;
+        }
+        .magenta {
+            background-color: magenta;
+        }
+        .lightskyblue {
+            background-color: lightskyblue;
+        }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="high-scores">
+            <div class="caption">
+                High Scores:
+            </div>
+            <div id="highscores"></div>
+        </div>
+        <div class="canvas-container">
+            <canvas id="background" class="canvas blue"></canvas>
+            <canvas id="game" class="canvas"></canvas>
+        </div>
+        <div class="scores">
+            <div class="caption">
+                Scores:
+            </div>
+            <div id="scores">
+
+            </div>
+        </div>
+    </div>
+    <div class="join-form" id="join-form">
+        <div class="join-form-text">Choose your name:</div>
+        <input class="join-form-input" type="text" id="name-input">
+        <div class="join-form-text">Choose your color:</div>
+        <div class="colors-to-choose">
+            <div class="color-box yellow" onclick="chooseColor('yellow')" id='colors-yellow'>
+
+            </div>
+            <div class="color-box orange" onclick="chooseColor('orange')" id='colors-orange'>
+
+            </div>
+            <div class="color-box red" onclick="chooseColor('red')" id='colors-red'>
+
+            </div>
+            <div class="color-box greenyellow" onclick="chooseColor('greenyellow')" id='colors-greenyellow'>
+
+            </div>
+            <div class="color-box green" onclick="chooseColor('green')" id='colors-green'>
+
+            </div>
+            <div class="color-box violet" onclick="chooseColor('violet')" id='colors-violet'>
+
+            </div>
+            <div class="color-box magenta" onclick="chooseColor('magenta')" id='colors-magenta'>
+
+            </div>
+            <div class="color-box lightskyblue" onclick="chooseColor('lightskyblue')" id='colors-lightskyblue'>
+
+            </div>
+        </div>
+        <div class="join-form-button" onclick="clickedJoin()">Join Game</div>
+    </div>
+</body>
+<script src="/static/game.js"></script>
+
+</html>
