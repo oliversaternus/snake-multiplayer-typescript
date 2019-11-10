@@ -5,7 +5,7 @@ It runs the game logic entirely server-side with NodeJS und uses Socket.IO to se
 ![Screenshot](screenshot.png?raw=true "Screenshot")
 
 ## Live demo
-Checkout a live demo of this project at https://snake.blogscape.de
+Checkout a live demo of this project at https://snake.oliversaternus.de
 
 ## Rules
 Eat food or trap your enemies to raise your score.
